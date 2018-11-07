@@ -1,2 +1,7 @@
 a.out
 lex.yy.c
+*.swp
+*.swo
+*.tab.*
+lex.yy.c
+zjs
