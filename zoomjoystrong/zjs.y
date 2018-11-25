@@ -1,6 +1,6 @@
 %{
   #include <stdio.h>
-  // #include "zoomjoystrong.h"
+  #include "zoomjoystrong.h"
 
   void yyerror(const char* msg);
   int yylex();
@@ -24,10 +24,10 @@
 
 
 %%
-program:  statement_list END { printf("endprog\n"); }
+program:  statement_list END
 ;
 
-statement_list: statement { printf("statement\n"); }
+statement_list: statement
               | statement_list statement
 ;
 
@@ -42,40 +42,35 @@ command: line_command
 ;
 
 line_command:  LINE num num num num
-               { printf("LINE - %d %d %d %d\n", $2, $3, $4, $5); }
+               { line($2, $3, $4, $5); }
 ;
 
 point_command:  POINT num num
-               { printf("POINT - %d %d\n", $2, $3) }
+               { point($2, $3); }
 ;
 
 circle_command:  CIRCLE num num num
-               { printf("CIRCLE - %d %d %d\n", $2, $3, $4); }
+               { circle($2, $3, $4); }
 ;
 
 rectangle_command:  RECTANGLE num num num num
-               { printf("RECTANGLE - %d %d %d %d\n", $2, $3, $4, $5); }
+               { rectangle($2, $3, $4, $5); }
 ;
 
 set_color_command:  SET_COLOR num num num
-               { printf("SET_COLOR - %d %d %d\n", $2, $3, $4); }
+               { set_color($2, $3, $4); }
 ;
 
 
 num:  INT
-      { printf("INT"); }
 ;
 
 %%
 
 int main(int argc, char** argv){
-  printf("Starting\n");
-  // setup();
-  printf("Finished Starting\n");
+  setup();
 	yyparse();
-  printf("Finishing\n");
-  // finish();
-  printf("Finished Finishing\n");
+  finish();
 	return 0;
 }
 
