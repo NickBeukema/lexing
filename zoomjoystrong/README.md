@@ -1,8 +1,16 @@
 # Zoomjoystrong
 
-To compile the lexer, run the following:
+To compile the language, run the following:
 
-    flex zjs.lex; clang lex.yy.c -lfl; ./a.out
+    flex zjs.l
+    bison -d zjs.y
+    gcc -o zjs zoomjoystrong.c lex.yy.c zjs.tab.c -lSDL2 -lm
+
+There are two test files includes to use, `test.zjs` and `gv.zjs`. Once compiled, use the following command to process a script:
+
+    ./zjs < gv.zjs
+
+**Note** When running there is a bus error once the program ends. After talking with the professor, we were unable to figure out the cause. The program still runs, it apparantly just doesn't clean up correctly.
 
 ## Available Tokens
 
