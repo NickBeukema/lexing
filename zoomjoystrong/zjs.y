@@ -6,6 +6,7 @@
   int yylex();
   int yylineno;
   int yywrap;
+  int yline = 1;
 %}
 
 %union { int i; float f; }
@@ -32,6 +33,9 @@ statement_list: statement
 ;
 
 statement:  command END_STATEMENT
+ {
+   yline++;
+}
 ;
 
 command: line_command
@@ -58,7 +62,15 @@ rectangle_command:  RECTANGLE num num num num
 ;
 
 set_color_command:  SET_COLOR num num num
-               { set_color($2, $3, $4); }
+              {
+                if($2 > 255 || $3 > 255 || $4 > 255)
+                {
+                  yyerror("set_color values must be between 0 and 255");
+                  exit(1);
+                }
+
+                set_color($2, $3, $4);
+              }
 ;
 
 
@@ -75,5 +87,5 @@ int main(int argc, char** argv){
 }
 
 void yyerror(const char* msg){
-	fprintf(stderr, "ERROR! %s on line %d!\n", msg, yylineno);
+	fprintf(stderr, "ERROR! %s on line %d!\n", msg, yline);
 }
